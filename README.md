@@ -1,2 +1,2 @@
 # SAMPLE-KIVYMD-APP
-The sample kivy adn kivymd app and apk conversion.
+The sample kivy and kivymd app to apk conversion.
