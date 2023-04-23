@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = SampleApp
+title = DownTube
 
 # (str) Package name
-package.name = sampleapk
+package.name = downtube 
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.novfensec
@@ -93,7 +93,7 @@ android.presplash_color = black
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-#android.permissions = INTERNET
+android.permissions = INTERNET
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
