@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = SampleApp
+title = Jogender
 
 # (str) Package name
 package.name = sampleapk
