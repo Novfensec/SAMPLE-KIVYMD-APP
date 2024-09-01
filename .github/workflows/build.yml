@@ -1,59 +1,65 @@
 name: CI
+
 on:
   push:
-    branches-ignore:
-      - data
-      - gh-pages
-    tags:
-      - '**'
+    branches:
+      - main
   pull_request:
-    branches-ignore:
-      - data
-      - gh-pages
+    branches:
+      - main
 
 jobs:
-  # Build job. Builds app for Android with Buildozer
-  build-android:
-    name: Build for Android
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # Step 1: Checkout the code
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          path: master
 
-      - name: Remove problematic git config entry
-        run: |
-          git config --global --unset url.gihub.com/extraheader.insteadOf || true
-          git config --unset url.github.com/exraheader.insteadOf || true
-
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          repository_root: master
-          workdir: .
-          buildozer_version: stable
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: data
-          ref: data # Branch name
-
-      - name: Set up Python
+      # Step 2: Set up Python
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-          architecture: x64
 
-      - name: Push binary to data branch
-        if: github.event_name == 'push'
-        run: python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master data bin
+      # Step 3: Cache pip packages to speed up builds
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 5: Install Buildozer
+      - name: Install Buildozer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y buildozer
+
+      # Step 6: Install Android SDK dependencies
+      - name: Install Android SDK
+        run: |
+          sudo apt-get install -y libncurses5 libtinfo5 libtinfo-dev zlib1g-dev openjdk-8-jdk
+          yes | sdkmanager --licenses
+          yes | sdkmanager --update
+
+      # Step 7: Build the APK
+      - name: Build APK with Buildozer
+        run: |
+          buildozer android debug
+
+      # Step 8: Upload the APK as an artifact
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyApp-debug.apk
+          path: |
+            ./bin/*.apk
