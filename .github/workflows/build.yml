@@ -23,6 +23,11 @@ jobs:
         with:
           path: master
 
+      - name: Remove problematic git config entry
+        run: |
+          git config --global --unset url.gihub.com/extraheader.insteadOf || true
+          git config --unset url.github.com/exraheader.insteadOf || true
+
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
@@ -46,7 +51,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.8
           architecture: x64
 
       - name: Push binary to data branch
