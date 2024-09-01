@@ -45,10 +45,7 @@ jobs:
             cmake \
             libffi-dev \
             libssl-dev
-          export PATH=$PATH:~/.local/bin/
-          python3 -m pip install --upgrade \
-            Cython==0.29.33 \
-            buildozer
+          python3 -m pip install --upgrade Cython==0.29.33 buildozer
         shell: bash
 
       - name: Build with Buildozer
