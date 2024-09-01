@@ -12,6 +12,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      REPO_OS_OVERRIDE: linux
+      ANDROID_HOME: ${{ github.workspace }}/.android-sdk
+      ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
+      ANDROID_NDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -19,13 +25,13 @@ jobs:
     - name: Set up Java 17
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin' 
+        distribution: 'temurin'
         java-version: '17'
 
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.11
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
@@ -34,7 +40,7 @@ jobs:
                             libpython3-dev zlib1g-dev libncurses5-dev libgdbm-dev \
                             libnss3-dev libsqlite3-dev libreadline-dev libbz2-dev \
                             liblzma-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
-                            liblzma-dev git zip unzip openjdk-8-jdk
+                            liblzma-dev git zip unzip openjdk-8-jdk curl
 
     - name: Install pip dependencies
       run: |
@@ -47,27 +53,19 @@ jobs:
 
     - name: Install Android SDK and accept licenses
       run: |
-        mkdir -p $HOME/.android-sdk/cmdline-tools
-        cd $HOME/.android-sdk/cmdline-tools
+        mkdir -p $ANDROID_HOME/cmdline-tools
+        cd $ANDROID_HOME/cmdline-tools
         curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
         unzip sdk-tools.zip
-        yes | $HOME/.android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/.android-sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3" --licenses
-        yes | $HOME/.android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --update
-      env:
-        ANDROID_HOME: $HOME/.android-sdk
-        ANDROID_SDK_ROOT: $HOME/.android-sdk
+        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-30" "build-tools;30.0.3" --licenses
+        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager --update
 
     - name: Build the APK
       run: |
         buildozer android debug
-      env:
-        ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
-        ANDROID_NDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
-        ANDROID_HOME: $HOME/.android-sdk
-        ANDROID_SDK_ROOT: $HOME/.android-sdk
 
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
-          name: MyApp.apk
-          path: bin/*.apk
+        name: MyApp.apk
+        path: bin/*.apk
