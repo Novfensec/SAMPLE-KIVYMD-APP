@@ -39,11 +39,24 @@ jobs:
     - name: Install pip dependencies
       run: |
         pip install --upgrade pip
-        pip install setuptools wheel cython
+        pip install setuptools wheel cython==0.29.33
 
     - name: Install Buildozer and requirements
       run: |
         pip install buildozer
+
+    - name: Set ANDROID_SDK_ROOT
+      run: echo "ANDROID_SDK_ROOT=${{ github.workspace }}/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
+
+    - name: Install Android SDK dependencies and accept licenses
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libncurses5 libtinfo5 libtinfo-dev zlib1g-dev
+        yes | sdkmanager --licenses  # Automatically accepts licenses
+        yes | sdkmanager --update    # Ensure SDK components are up-to-date
+      env:
+        ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
+        ANDROID_SDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
 
     - name: Build the APK
       run: |
@@ -57,4 +70,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
           name: MyApp.apk
-          path: bin/*.apk 
+          path: bin/*.apk
