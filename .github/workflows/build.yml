@@ -9,55 +9,52 @@ on:
       - main
 
 jobs:
-  build-apk:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Step 2: Set up Python
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin' 
+        java-version: '17'
 
-      # Step 3: Cache pip packages to speed up builds
-      - name: Cache pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
 
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential libssl-dev libffi-dev python3-dev \
+                            libpython3-dev zlib1g-dev libncurses5-dev libgdbm-dev \
+                            libnss3-dev libsqlite3-dev libreadline-dev libbz2-dev \
+                            liblzma-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
+                            liblzma-dev git zip unzip openjdk-8-jdk
 
-      # Step 5: Install Buildozer
-      - name: Install Buildozer
-        run: |
-          pip install buildozer
+    - name: Install pip dependencies
+      run: |
+        pip install --upgrade pip
+        pip install setuptools wheel cython
 
-      # Step 6: Install Android SDK dependencies
-      - name: Install Android SDK
-        run: |
-          sudo apt-get install -y libncurses5 libtinfo5 libtinfo-dev zlib1g-dev openjdk-8-jdk
-          yes | sdkmanager --licenses
-          yes | sdkmanager --update
+    - name: Install Buildozer and requirements
+      run: |
+        pip install buildozer
 
-      # Step 7: Build the APK
-      - name: Build APK with Buildozer
-        run: |
-          buildozer android debug
+    - name: Build the APK
+      run: |
+        buildozer android debug
+      env:
+        ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
+        ANDROID_NDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
+        ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
 
-      # Step 8: Upload the APK as an artifact
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: MyApp-debug.apk
-          path: |
-            ./bin/*.apk
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+          name: MyApp.apk
+          path: bin/*.apk 
