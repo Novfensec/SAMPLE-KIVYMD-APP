@@ -51,8 +51,8 @@ jobs:
         cd $HOME/.android-sdk/cmdline-tools
         curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
         unzip sdk-tools.zip
-        yes | $HOME/.android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/.android-sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3" --licenses
-        yes | $HOME/.android-sdk/cmdline-tools/bin/sdkmanager --update
+        yes | $HOME/.android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/.android-sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3" --licenses
+        yes | $HOME/.android-sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --update
       env:
         ANDROID_HOME: $HOME/.android-sdk
         ANDROID_SDK_ROOT: $HOME/.android-sdk
