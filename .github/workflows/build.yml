@@ -40,8 +40,7 @@ jobs:
       # Step 5: Install Buildozer
       - name: Install Buildozer
         run: |
-          sudo apt-get update
-          sudo apt-get install -y buildozer
+          pip install buildozer
 
       # Step 6: Install Android SDK dependencies
       - name: Install Android SDK
