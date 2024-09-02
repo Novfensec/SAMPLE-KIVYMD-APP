@@ -52,10 +52,6 @@ jobs:
           libavformat-dev \
           libavcodec-dev \
           zlib1g-dev
-        sudo apt-get install build-essential libsqlite3-dev \
-          sqlite3 bzip2 libbz2-dev zlib1g-dev \
-          openssl libgdbm-dev libgdbm-compat-dev \
-          liblzma-dev libreadline-dev uuid-dev libffi6
         sudo apt-get install -y \
           libgstreamer1.0 \
           gstreamer1.0-plugins-base \
@@ -64,6 +60,10 @@ jobs:
           autoconf libtool pkg-config zlib1g-dev \
           libncurses5-dev libncursesw5-dev libtinfo \
           cmake libffi-dev libssl-dev automake 
+        sudo apt-get install build-essential libsqlite3-dev \
+          sqlite3 bzip2 libbz2-dev zlib1g-dev \
+          openssl libgdbm-dev libgdbm-compat-dev \
+          liblzma-dev libreadline-dev uuid-dev libffi6
 
     - name: Install pip dependencies
       run: |
