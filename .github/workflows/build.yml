@@ -60,6 +60,7 @@ jobs:
           libswscale-dev \
           libavformat-dev \
           libavcodec-dev \
+          libunwind-dev \
           zlib1g-dev
 
         sudo apt-get install -y \
