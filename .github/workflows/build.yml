@@ -1,34 +1,60 @@
 name: CI
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  # Build job. Builds app for Android with Buildozer
-  build-android:
-    name: Build for Android
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install setuptools wheel cython==0.29.33
-          sudo apt install -y git zip unzip openjdk-17-jdk \
-            autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev libtinfo5 \
-            cmake libffi-dev libssl-dev automake 
+    - name: Set up Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          workdir: .
-          buildozer_version: stable
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y python3-pip build-essential git python3 python3-dev ffmpeg \
+                            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+                            libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
+                            zlib1g-dev libunwind-dev libgstreamer1.0 gstreamer1.0-plugins-base \
+                            gstreamer1.0-plugins-good libsqlite3-dev sqlite3 bzip2 libbz2-dev \
+                            zlib1g-dev openssl libgdbm-dev libgdbm-compat-dev liblzma-dev \
+                            libreadline-dev uuid-dev git zip unzip openjdk-17-jdk \
+                            autoconf libtool pkg-config libncurses5-dev libncursesw5-dev \
+                            libtinfo5 cmake libffi-dev libssl-dev automake
+
+    - name: Install pip dependencies
+      run: |
+        pip install --upgrade pip
+        pip install setuptools wheel cython==0.29.21
+
+    - name: Install Buildozer and requirements
+      run: |
+        pip install buildozer
+
+    - name: Build the APK
+      run: |
+        buildozer android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: MyApp.apk
+        path: bin/*.apk
