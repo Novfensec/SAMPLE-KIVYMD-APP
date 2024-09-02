@@ -37,7 +37,8 @@ jobs:
         sudo apt-get install -y libffi-dev libssl-dev zlib1g-dev
         sudo apt-get install -y openjdk-8-jdk
         pip install --upgrade pip
-        pip install buildozer==1.3.0 cython==0.29.21
+        rm -rf ~/.buildozer
+        pip install buildozer cython
 
     - name: Build With Buildozer
       run: |
