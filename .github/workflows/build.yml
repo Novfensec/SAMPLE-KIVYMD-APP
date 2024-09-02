@@ -11,7 +11,7 @@ jobs:
         uses: digreatbrian/buildozer-action@v1
         with:
           buildozer-cmd: buildozer -v android debug
-          work-dir: . # directory where your main.py file rests
+          workdir: . # directory where your main.py file rests
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
