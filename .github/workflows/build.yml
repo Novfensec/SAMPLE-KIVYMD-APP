@@ -34,7 +34,7 @@ jobs:
 
     - name: Install Buildozer and requirements
       run: |
-        pip install buildozer
+        pip install buildozer==1.3.0
 
     - name: Install dependencies
       run: |
