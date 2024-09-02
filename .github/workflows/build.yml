@@ -1,25 +1,20 @@
-name: Build
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
-  # Build job. Builds app for Android with Buildozer
-  build-android:
-    name: Build for Android
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - uses: actions/checkout@v2
+      - name: Build APK
+        uses: digreatbrian/buildozer-action@v1
         with:
-          workdir: .
-          buildozer_version: stable
+          buildozer-cmd: buildozer -v android debug
+          work-dir: . # directory where your main.py file rests
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: ./bin/*.apk
