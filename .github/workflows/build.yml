@@ -39,7 +39,8 @@ jobs:
         sudo apt-get install -y python3-pip openjdk-8-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev
         pip install --upgrade pip
         rm -rf ~/.buildozer
-        pip install buildozer==1.4.0 cython==0.29.33
+        pip install pyjnius
+        pip install buildozer==1.5.0 cython==3.0.0
 
     - name: Build With Buildozer
       run: |
