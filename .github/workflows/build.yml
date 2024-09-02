@@ -71,7 +71,7 @@ jobs:
         sudo apt-get install build-essential libsqlite3-dev \
           sqlite3 bzip2 libbz2-dev zlib1g-dev \
           openssl libgdbm-dev libgdbm-compat-dev \
-          liblzma-dev libreadline-dev uuid-dev libffi6
+          liblzma-dev libreadline-dev uuid-dev
 
         sudo apt install -y git zip unzip openjdk-17-jdk \
           autoconf libtool pkg-config zlib1g-dev \
