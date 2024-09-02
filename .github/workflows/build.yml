@@ -78,14 +78,11 @@ jobs:
           libncurses5-dev libncursesw5-dev libtinfo5 \
           cmake libffi-dev libssl-dev automake 
 
-    - name: Install Android SDK and accept licenses
+    - name: Install Android SDK
       run: |
         mkdir -p $ANDROID_HOME/cmdline-tools
         curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
         unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools
-        # Ensure the binary is correctly placed and accessible
-        ln -s $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --update
 
