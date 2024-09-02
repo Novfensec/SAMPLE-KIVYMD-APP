@@ -25,7 +25,7 @@ jobs:
         id: buildozer
         with:
           workdir: .
-          buildozer_version: master
+          buildozer_version: stable
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
