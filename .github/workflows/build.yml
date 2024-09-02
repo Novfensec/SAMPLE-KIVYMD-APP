@@ -34,7 +34,7 @@ jobs:
           libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev \
           libtinfo5 cmake libffi-dev
 
-          pip install cython==0.29.36
+          pip install cython==0.29.21
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
