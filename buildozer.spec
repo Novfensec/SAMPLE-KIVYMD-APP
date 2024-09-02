@@ -19,10 +19,10 @@ source.dir = .
 source.include_patterns = images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-3source.exclude_exts = spec
+#source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, venv
+#source.exclude_dirs = tests, bin, venv
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
