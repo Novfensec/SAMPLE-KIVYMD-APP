@@ -80,12 +80,12 @@ jobs:
 
     - name: Install Android SDK and accept licenses
       run: |
-        mkdir -p $ANDROID_HOME/cmdline-tools
-        cd $ANDROID_HOME/cmdline-tools
+        mkdir -p $ANDROID_HOME/cmdline-tools/latest
         curl -o sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
-        unzip sdk-tools.zip
-        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-30" "build-tools;30.0.3" --licenses
-        yes | $ANDROID_HOME/cmdline-tools/cmdline-tools/bin/sdkmanager --update
+        unzip sdk-tools.zip -d $ANDROID_HOME/cmdline-tools/latest
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --update
 
     - name: Build the APK
       run: |
