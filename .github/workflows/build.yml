@@ -38,7 +38,7 @@ jobs:
         sudo apt-get install -y openjdk-8-jdk
         pip install --upgrade pip
         rm -rf ~/.buildozer
-        pip install buildozer cython
+        pip install buildozer==stable cython==0.29.33
 
     - name: Build With Buildozer
       run: |
