@@ -1,22 +1,53 @@
 name: CI
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build APK
-        uses: digreatbrian/buildozer-action@v2
-        with:
-          buildozer-cmd: buildozer -v android debug
-          workdir: . # directory where your main.py file rests
-          python-version: 3.8
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package
-          path: ./bin/*.apk
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip python3-setuptools python3-wheel
+        sudo apt-get install -y build-essential git zip unzip
+        sudo apt-get install -y libncurses5 libffi-dev libssl-dev
+        sudo apt-get install -y liblzma-dev libgdbm-dev libsqlite3-dev
+        sudo apt-get install -y libreadline-dev libbz2-dev libncursesw5-dev
+        sudo apt-get install -y libgdbm-compat-dev liblzma-dev tk-dev
+        sudo apt-get install -y libffi-dev libssl-dev zlib1g-dev
+        sudo apt-get install -y libgdbm-dev libsqlite3-dev libreadline-dev
+        sudo apt-get install -y libbz2-dev libncursesw5-dev libgdbm-compat-dev
+        sudo apt-get install -y liblzma-dev tk-dev libffi-dev libssl-dev
+        sudo apt-get install -y zlib1g-dev libgdbm-dev libsqlite3-dev
+        sudo apt-get install -y libreadline-dev libbz2-dev libncursesw5-dev
+        sudo apt-get install -y libgdbm-compat-dev liblzma-dev tk-dev
+        sudo apt-get install -y libffi-dev libssl-dev zlib1g-dev
+        sudo apt-get install -y openjdk-8-jdk
+        pip install --upgrade pip
+        pip install buildozer==1.3.0 cython==0.29.21
+
+    - name: Build With Buildozer
+      run: |
+        buildozer -v android debug
+      env:
+        ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
+        ANDROID_NDK_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21d
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: bin/*.apk
