@@ -1,53 +1,26 @@
 name: CI
-
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
-  build:
+  # Build job. Builds app for Android with Buildozer
+  build-android:
+    name: Build for Android
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          workdir: .
+          buildozer_version: stable
+          python-version: 3.8
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y python3-pip python3-setuptools python3-wheel
-        sudo apt-get install -y build-essential git zip unzip
-        sudo apt-get install -y libncurses5 libffi-dev libssl-dev
-        sudo apt-get install -y liblzma-dev libgdbm-dev libsqlite3-dev
-        sudo apt-get install -y libreadline-dev libbz2-dev libncursesw5-dev
-        sudo apt-get install -y libgdbm-compat-dev liblzma-dev tk-dev
-        sudo apt-get install -y libffi-dev libssl-dev zlib1g-dev
-        sudo apt-get install -y libgdbm-dev libsqlite3-dev libreadline-dev
-        sudo apt-get install -y libbz2-dev libncursesw5-dev libgdbm-compat-dev
-        sudo apt-get install -y liblzma-dev tk-dev libffi-dev libssl-dev
-        sudo apt-get install -y zlib1g-dev libgdbm-dev libsqlite3-dev
-        sudo apt-get install -y libreadline-dev libbz2-dev libncursesw5-dev
-        sudo apt-get install -y libgdbm-compat-dev liblzma-dev tk-dev
-        sudo apt-get install -y libffi-dev libssl-dev zlib1g-dev
-        sudo apt-get install -y openjdk-8-jdk
-        sudo apt-get install -y python3-pip openjdk-8-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev
-        pip install --upgrade pip
-        rm -rf ~/.buildozer
-        pip install pyjnius
-        pip install buildozer==1.5.0 cython==3.0.0
-
-    - name: Build With Buildozer
-      run: |
-        buildozer -v android debug
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v2
-      with:
-        name: app-release.apk
-        path: bin/*.apk
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: ${{ steps.buildozer.outputs.filename }}
