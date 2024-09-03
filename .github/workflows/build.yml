@@ -61,12 +61,17 @@ jobs:
             libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev automake
 
+      - name: Install pip dependencies
+        run: |
+          pip install --upgrade pip
+          pip install cython==0.29.33
+
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
-          command: buildozer android debug
-          buildozer_version: stable
+          command: buildozer -v android debug
+          buildozer_version: 1.5.0
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
