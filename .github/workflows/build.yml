@@ -10,27 +10,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # used to cache dependencies with a timeout
-      - name: Get Date
-        id: get-date
-        run: |
-          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-        shell: bash
-
+      # Cache Buildozer global directory
       - name: Cache Buildozer global directory
         uses: actions/cache@v2
         with:
           path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }} # Replace with your path
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
+      # Cache Buildozer specific directory
       - uses: actions/cache@v2
         with:
           path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
-
+          key: ${{ runner.os }}-${{ github.sha }}-buildozer
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install -y \
             python3-pip \
             build-essential \
@@ -48,30 +43,30 @@ jobs:
             libavcodec-dev \
             libunwind-dev \
             zlib1g-dev
-          sudo apt-get install build-essential libsqlite3-dev \
-            sqlite3 bzip2 libbz2-dev zlib1g-dev \
-            openssl libgdbm-dev libgdbm-compat-dev \
+          sudo apt-get install -y \
+            libsqlite3-dev sqlite3 bzip2 \
+            libbz2-dev zlib1g-dev openssl \
+            libgdbm-dev libgdbm-compat-dev \
             liblzma-dev libreadline-dev uuid-dev
           sudo apt-get install -y \
-            libgstreamer1.0 \
-            gstreamer1.0-plugins-base \
+            libgstreamer1.0 gstreamer1.0-plugins-base \
             gstreamer1.0-plugins-good
-          sudo apt install -y git zip unzip openjdk-17-jdk \
-            autoconf libtool pkg-config zlib1g-dev \
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk autoconf \
+            libtool pkg-config zlib1g-dev \
             libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev automake
 
       - name: Install pip dependencies
         run: |
           pip install --upgrade pip
-          pip install --upgrade cython
+          pip install --upgrade cython buildozer
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
           command: buildozer -v android debug
-          buildozer_version: 1.5.0
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
