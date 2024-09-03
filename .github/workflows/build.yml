@@ -61,11 +61,6 @@ jobs:
             libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev automake
 
-      - name: Install pip dependencies
-        run: |
-          pip install --upgrade pip
-          pip install cython==0.29.19
-
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
