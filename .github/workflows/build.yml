@@ -107,16 +107,15 @@ jobs:
           unzip commandlinetools-linux-8092744_latest.zip -d cmdline-tools
           mkdir -p $HOME/android-sdk/cmdline-tools/latest
           mv cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest/
-          sdkmanager --sdk_root=$HOME/android-sdk --licenses
-          sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-33" "build-tools;33.0.0" "build-tools;32.0.0" "platforms;android-32"
-          sdkmanager --sdk_root=$HOME/android-sdk "build-tools;29.0.0"
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+          sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          yes | sdkmanager --sdk_root=$ANDROID_HOME "platform-tools" "platforms;android-33" "build-tools;33.0.0" "build-tools;32.0.0" "platforms;android-32"
 
       # Build with Buildozer
       - name: Build with Buildozer
         id: buildozer
         run: |
-          export ANDROID_HOME=$HOME/android-sdk
-          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
           yes | buildozer -v android debug
 
       # Upload artifacts
