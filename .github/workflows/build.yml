@@ -80,10 +80,12 @@ jobs:
             libssl-dev \
             automake
 
-      # Set up Java 17
-      - name: Set up Java 17
-        run: |
-          sudo apt-get install -y openjdk-17-jdk
+      # Set up Java 17 required by Gradle
+      - name: Setup Java 17 required by Gradle
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # or 'zulu', 'liberica', etc.
+          java-version: '17'
 
       # Set up Python
       - name: Set up Python
@@ -103,7 +105,11 @@ jobs:
           mkdir -p ~/.android && touch ~/.android/repositories.cfg
           wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
           unzip commandlinetools-linux-8092744_latest.zip -d cmdline-tools
+          mkdir -p $HOME/android-sdk/cmdline-tools/latest
+          mv cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest/
+          sdkmanager --sdk_root=$HOME/android-sdk --licenses
           sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-33" "build-tools;33.0.0" "build-tools;32.0.0" "platforms;android-32"
+          sdkmanager --sdk_root=$HOME/android-sdk "build-tools;29.0.0"
 
       # Build with Buildozer
       - name: Build with Buildozer
@@ -113,6 +119,7 @@ jobs:
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
           yes | buildozer -v android debug
 
+      # Upload artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
