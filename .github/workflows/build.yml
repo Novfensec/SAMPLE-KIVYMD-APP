@@ -103,10 +103,7 @@ jobs:
           mkdir -p ~/.android && touch ~/.android/repositories.cfg
           wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
           unzip commandlinetools-linux-8092744_latest.zip -d cmdline-tools
-          mkdir -p $HOME/android-sdk/cmdline-tools/latest
-          mv cmdline-tools/* $HOME/android-sdk/cmdline-tools/latest/
-          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk --licenses
-          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-33" "build-tools;33.0.0" "build-tools;32.0.0" "platforms;android-32"
+          sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-33" "build-tools;33.0.0" "build-tools;32.0.0" "platforms;android-32"
 
       # Build with Buildozer
       - name: Build with Buildozer
