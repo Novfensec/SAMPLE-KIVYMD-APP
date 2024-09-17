@@ -9,7 +9,7 @@ MDScreen:
     MDLabel:
         text:'Hello,World.'
         multiline:True
-        color:"Blue"
+        color:"blue"
         halign:'center'         
 '''
         AppScreen=Builder.load_string(self.appKv)
