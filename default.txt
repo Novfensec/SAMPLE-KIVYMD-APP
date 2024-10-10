@@ -1,0 +1,8 @@
+{
+    "endereco": "",
+    "data de pagamento": "",
+    "data de vencimento": "",
+    "data de vencimento do contrato": "",
+    "data de vencimento do seguro": "",
+    "valor do aluguel": ""
+}
