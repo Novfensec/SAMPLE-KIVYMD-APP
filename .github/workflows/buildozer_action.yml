@@ -1,6 +1,6 @@
 # Sample repository at https://github.com/Novfensec/SAMPLE-KIVYMD-APP
 
-name: CI - Android
+name: Android Build
 
 on:
   push:
@@ -16,24 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      # Used to cache dependencies with a timeout
-      - name: Get Date
-        id: get-date
-        run: |
-          echo "date=$(date -u '+%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v3
-        with:
-          path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
-
-      - uses: actions/cache@v3
-        with:
-          path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
       # Install dependencies
       - name: Install dependencies
