@@ -140,3 +140,9 @@ jobs:
             bin/*.apk
             bin/*.aab
           retention-days: 3
+          - name: Upload artifact
+  uses: actions/upload-artifact@v3
+  with:
+    name: my-artifact
+    path: path/to/artifact
+    retention-days: 90  # Increase this as needed
