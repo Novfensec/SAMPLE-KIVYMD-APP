@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.3.0,kivymd==1.1.1,pillow==10.3.0
+requirements = python3, kivy==2.3.1, https://github.com/kivymd/KivyMD/archive/master.zip, exceptiongroup, asynckivy, asyncgui, materialyoucolor, android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -67,7 +67,7 @@ orientation = portrait
 osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.9.1
+osx.kivy_version = 2.3.1
 
 #
 # Android specific
@@ -101,16 +101,16 @@ fullscreen = 0
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-#android.api = 31
+android.api = 35
 
 # (int) Minimum API your APK / AAB will support.
-#android.minapi = 21
+android.minapi = 21
 
 # (int) Android SDK version to use
 #android.sdk = 20
 
 # (str) Android NDK version to use
-#android.ndk = 23b
+android.ndk = 25b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -136,7 +136,7 @@ fullscreen = 0
 # agreements. This is intended for automation only. If set to False,
 # the default, you will be shown the license when first running
 # buildozer.
-# android.accept_sdk_license = False
+android.accept_sdk_license = True
 
 # (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
@@ -305,10 +305,10 @@ android.allow_backup = True
 # android.no-byte-compile-python = False
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
-# android.release_artifact = aab
+android.release_artifact = aab
 
 # (str) The format used to package the app for debug mode (apk or aar).
-# android.debug_artifact = apk
+android.debug_artifact = apk
 
 #
 # Python for android (p4a) specific
@@ -367,8 +367,8 @@ ios.kivy_ios_branch = master
 # Uncomment to use a custom checkout
 #ios.ios_deploy_dir = ../ios_deploy
 # Or specify URL and branch
-ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
-ios.ios_deploy_branch = 1.10.0
+ios.ios_deploy_url = https://github.com/ios-control/ios-deploy
+ios.ios_deploy_branch = master
 
 # (bool) Whether or not to sign the code
 ios.codesign.allowed = false
