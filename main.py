@@ -12,7 +12,7 @@ class SampleApp(MDApp):
         self.theme_cls.primary_palette = "Darkblue"
 
     def build(self) -> MDScreen:
-        self.appKv='''
+        self.appKv="""
 MDScreen:
     MDButton:
         style: 'tonal'
@@ -22,8 +22,8 @@ MDScreen:
 
         MDButtonText:
             text: 'Hello, World!'
-'''
-        AppScreen=Builder.load_string(self.appKv)
+"""
+        AppScreen = Builder.load_string(self.appKv)
         self.apply_styles("Light")
         return AppScreen
 
