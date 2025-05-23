@@ -3,6 +3,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
+from kivymd.utils.set_bars_colors import set_bars_colors
 
 
 class SampleApp(MDApp):
