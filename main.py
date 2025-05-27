@@ -19,7 +19,7 @@ MDScreen:
         style: 'tonal'
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
         on_press:
-            app.apply_styles("Light) if (not app.theme_cls.theme_style == "Light") else app.apply_styles("Dark")
+            app.apply_styles("Light") if (not app.theme_cls.theme_style == "Light") else app.apply_styles("Dark")
 
         MDButtonText:
             text: 'Hello, World!'
