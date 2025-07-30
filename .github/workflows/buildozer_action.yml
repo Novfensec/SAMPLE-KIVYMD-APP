@@ -113,7 +113,7 @@ jobs:
       - name: Install pip dependencies
         run: |
           pip install --upgrade pip
-          pip install buildozer cython==0.29.33
+          pip install buildozer cython==3.0.11
       
       ## Set env variables for P4A Android App Bundle (Signed) [Required by Google Play]
       ## https://gist.github.com/Guhan-SenSam/fa4ed215ef3419e7b3154de5cb71f641
