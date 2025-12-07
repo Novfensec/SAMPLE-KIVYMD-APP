@@ -6,10 +6,7 @@ name: Android Build
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -66,7 +63,8 @@ jobs:
             libavformat-dev \
             libavcodec-dev \
             libunwind-dev \
-            zlib1g-dev
+            zlib1g-dev \
+            autoconf-archive
           sudo apt-get install -y \
             libsqlite3-dev \
             sqlite3 \
@@ -87,6 +85,9 @@ jobs:
             unzip \
             autoconf \
             libtool \
+            automake \
+            libltdl-dev \
+            m4 \
             pkg-config \
             libncurses5-dev \
             libncursesw5-dev \
@@ -94,7 +95,8 @@ jobs:
             cmake \
             libffi-dev \
             libssl-dev \
-            automake
+            autopoint \
+            gettext
 
       # Set up Java 17 required by Gradle
       - name: Setup Java 17 required by Gradle
@@ -114,22 +116,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install buildozer cython==3.0.11
-      
-      ## Set env variables for P4A Android App Bundle (Signed) [Required by Google Play]
-      ## https://gist.github.com/Guhan-SenSam/fa4ed215ef3419e7b3154de5cb71f641
-      # - name: Set environment variables
-      #   env:
-      #     P4A_RELEASE_KEYSTORE: ${{ secrets.P4A_RELEASE_KEYSTORE }}
-      #     P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.P4A_RELEASE_KEYSTORE_PASSWD }}
-      #     P4A_RELEASE_KEYALIAS: ${{ secrets.P4A_RELEASE_KEYALIAS }}
-      #     P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.P4A_RELEASE_KEYALIAS_PASSWD }}
 
-      #   run: |
-      #     echo "P4A_RELEASE_KEYSTORE=$P4A_RELEASE_KEYSTORE" >> $GITHUB_ENV
-      #     echo "P4A_RELEASE_KEYSTORE_PASSWD=$P4A_RELEASE_KEYSTORE_PASSWD" >> $GITHUB_ENV
-      #     echo "P4A_RELEASE_KEYALIAS=$P4A_RELEASE_KEYALIAS" >> $GITHUB_ENV
-      #     echo "P4A_RELEASE_KEYALIAS_PASSWD=$P4A_RELEASE_KEYALIAS_PASSWD" >> $GITHUB_ENV
-      
       # Build with Buildozer
       - name: Build with Buildozer
         id: buildozer
@@ -146,4 +133,3 @@ jobs:
           path: |
             bin/*.apk
             bin/*.aab
-          retention-days: 3
