@@ -17,7 +17,7 @@ This repository contains a sample Kivy and KivyMD Python application, showcasing
 Please donate:
 - [PayPal/Novfensec](https://paypal.me/KARTAVYASHUKLA)
 - [Github Sponsors/Novfensec](https://github.com/sponsors/Novfensec)
-- [Patreon/Novfensec](https://patreon.com/Novfensec)
+- [WISE/Novfensec](https://wise.com/pay/business/kartavyashukla)
 
 ## Features
 
